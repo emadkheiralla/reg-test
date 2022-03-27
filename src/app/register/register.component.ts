@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ export class RegisterComponent implements OnInit {
   error!: string | null;
   form: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
     bio: new FormControl('', Validators.required)
   });
@@ -25,7 +25,9 @@ export class RegisterComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private user: UserService) {}
 
   ngOnInit(): void {
-    
+    window.onunload = () => {
+      localStorage.removeItem('loggedIn');
+    } 
   }
 
   submit() {
